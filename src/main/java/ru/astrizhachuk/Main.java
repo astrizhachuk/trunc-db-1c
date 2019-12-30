@@ -21,6 +21,9 @@ public class Main {
             } else if (cmd.hasOption("h")) {
                 command = new HelpCommand(options);
             } else {
+                if (!cmd.hasOption("b") && !cmd.hasOption("f")) {
+                    throw new ParseException("Specify the source of the metadata!");
+                }
                 command = new ExecuteCommand(cmd);
             }
 
@@ -34,7 +37,7 @@ public class Main {
         }
     }
 
-    private static Options createOptions() {
+    public static Options createOptions() {
         Options options = new Options();
         options.addOption(Option.builder("v")
                 .longOpt("version")
@@ -52,9 +55,15 @@ public class Main {
                 .build());
         options.addOption(Option.builder("b")
                 .longOpt("base")
-                .desc("base name of the 1c application'")
+                .desc("base name of the 1c application")
                 .hasArg()
                 .argName("BASE")
+                .build());
+        options.addOption(Option.builder("f")
+                .longOpt("file")
+                .desc("json format file with metadata")
+                .hasArg()
+                .argName("FILE")
                 .build());
         return options;
     }

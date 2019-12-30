@@ -65,17 +65,19 @@ class MainTest {
     }
 
     @Test
-    @ExpectSystemExitWithStatus(0)
+    @ExpectSystemExitWithStatus(1)
     void testWithoutParameters() {
         // given
         String[] args = new String[]{};
 
         // when
-        Main.main(args);
+        try {
+            Main.main(args);
+        } catch (RuntimeException ignored) {
+            // catch prevented system.exit call
+        }
 
         // then
-        // main-method should runs without exceptions
-        assertThat(outContent.toString()).isEmpty();
-        assertThat(errContent.toString()).isEmpty();
+        assertThat(errContent.toString()).containsIgnoringCase("specify the source of the metadata");
     }
 }

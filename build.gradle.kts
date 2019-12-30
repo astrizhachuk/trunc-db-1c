@@ -12,11 +12,16 @@ repositories {
 }
 
 val junitVersion = "5.5.2"
+val jacksonVersion = "2.10.0"
 
 dependencies {
 
     // https://mvnrepository.com/artifact/commons-cli/commons-cli
     implementation("commons-cli", "commons-cli", "1.4")
+
+    implementation("com.fasterxml.jackson.core", "jackson-databind", jacksonVersion)
+    implementation("com.fasterxml.jackson.datatype", "jackson-datatype-jsr310", jacksonVersion)
+    implementation("com.fasterxml.jackson.dataformat", "jackson-dataformat-xml", jacksonVersion)
 
     implementation("org.slf4j", "slf4j-api", "1.8.0-beta4")
     implementation("org.slf4j", "slf4j-simple", "1.8.0-beta4")
