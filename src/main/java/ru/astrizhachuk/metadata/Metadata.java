@@ -62,9 +62,9 @@ public class Metadata {
             }
             Map<String, String> tablesMap = new HashMap<>();
             Iterator<JsonNode> tableNodes = node.elements();
-            tableNodes.forEachRemaining((JsonNode entry) -> {
-                tablesMap.put(entry.get("tableName").asText(), entry.get("storageTableName").asText());
-            });
+            tableNodes.forEachRemaining((JsonNode entry) ->
+                    tablesMap.put(entry.get("tableName").asText(), entry.get("storageTableName").asText())
+            );
             return tablesMap;
         }
     }
