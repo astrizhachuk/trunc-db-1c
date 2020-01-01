@@ -1,6 +1,7 @@
 plugins {
     java
     id("io.franzbecker.gradle-lombok") version "3.2.0"
+    id("com.github.johnrengelman.shadow") version "5.2.0"
 }
 
 group = "ru.astrizhachuk"
@@ -39,10 +40,24 @@ configure<JavaPluginConvention> {
     sourceCompatibility = JavaVersion.VERSION_1_8
 }
 
+tasks.withType<JavaCompile> {
+    options.encoding = "UTF-8"
+}
+
 tasks.jar {
     manifest {
         attributes["Main-Class"] = "ru.astrizhachuk.Main"
+        attributes["Implementation-ShadowJarVersion"] = archiveVersion.get()
     }
+
+    enabled = false
+    dependsOn(tasks.shadowJar)
+}
+
+tasks.shadowJar {
+    project.configurations.implementation.get().isCanBeResolved = true
+    configurations = listOf(project.configurations["implementation"])
+    archiveClassifier.set("")
 }
 
 tasks.test {
