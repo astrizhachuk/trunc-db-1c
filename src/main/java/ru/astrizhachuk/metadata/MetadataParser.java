@@ -24,7 +24,7 @@ import java.util.Map;
 @Slf4j
 public class MetadataParser {
 
-    private Map<String, String> tables;  // в планах использование объектов, поэтому через десериализатор
+    private Map<String, String> tables;
 
     private MetadataParser() {
         this(new HashMap<>());
@@ -48,7 +48,7 @@ public class MetadataParser {
             }
 
         } catch (IOException e) {
-            LOGGER.error("Can't deserialize configuration file", e);
+            LOGGER.error("Can't deserialize metadata file", e);
         }
 
         if (metadataParser == null) {
