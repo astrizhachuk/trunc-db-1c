@@ -35,8 +35,8 @@ val jacksonVersion = "2.10.0"
 
 dependencies {
 
-    // https://mvnrepository.com/artifact/commons-cli/commons-cli
     implementation("commons-cli", "commons-cli", "1.4")
+    implementation("commons-io", "commons-io", "2.6")
 
     implementation("com.fasterxml.jackson.core", "jackson-databind", jacksonVersion)
     implementation("com.fasterxml.jackson.datatype", "jackson-datatype-jsr310", jacksonVersion)

@@ -1,0 +1,10 @@
+[
+  {
+    "tableName": "Справочник.АдресныеСокращения",
+    "storageTableName": "_Reference56"
+  },
+  {
+    "tableName": "Справочник.АдресныеСокращения.Изменения",
+    "storageTableName": "_ReferenceChngR728"
+  }
+]
