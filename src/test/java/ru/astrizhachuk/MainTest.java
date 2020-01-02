@@ -202,6 +202,23 @@ class MainTest {
     }
 
     @Test
+    @ExpectSystemExitWithStatus(0)
+    void testFileWithConfig() {
+        // given
+        String[] args = new String[]{"-f", "file", "-c", "config"};
+
+        // when
+        try {
+            Main.main(args);
+        } catch (RuntimeException ignored) {
+            // catch prevented system.exit call
+        }
+
+        // then
+        assertThat(outContent.toString()).isEmpty();
+    }
+
+    @Test
     @ExpectSystemExitWithStatus(1)
     void testWithoutParameters() {
         // given

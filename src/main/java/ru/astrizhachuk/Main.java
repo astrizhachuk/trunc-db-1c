@@ -61,9 +61,15 @@ public class Main {
                 .build());
         options.addOption(Option.builder("f")
                 .longOpt("file")
-                .desc("json format file with metadata")
+                .desc("path to metadata file")
                 .hasArg()
                 .argName("FILE")
+                .build());
+        options.addOption(Option.builder("c")
+                .longOpt("config")
+                .desc("path to configuration file")
+                .hasArg()
+                .argName("CONFIG")
                 .build());
         options.addOption(Option.builder("r")
                 .longOpt("report")
