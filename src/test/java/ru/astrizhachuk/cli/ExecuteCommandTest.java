@@ -12,15 +12,14 @@ import static ru.astrizhachuk.Main.createOptions;
 class ExecuteCommandTest {
 
     @Test
-    void testExecute() throws ParseException {
+    void testExecuteFile() throws ParseException {
 
         Options options = createOptions();
         DefaultParser parser = new DefaultParser();
-        CommandLine cmd = parser.parse(options, new String[]{"-f", "./src/test/resources/response.json"});
+        CommandLine cmd = parser.parse(options, new String[]{"-f", "./src/test/resources/short-response.json"});
         Command command = new ExecuteCommand(cmd);
         int result = command.execute();
 
         assertThat(result).isEqualTo(0);
     }
-
 }
