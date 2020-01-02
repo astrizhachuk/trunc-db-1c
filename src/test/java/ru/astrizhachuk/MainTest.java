@@ -65,6 +65,24 @@ class MainTest {
     }
 
     @Test
+    @ExpectSystemExitWithStatus(0)
+    void testVersion() {
+        // given
+        String[] args = new String[]{"--version"};
+
+        // when
+        try {
+            Main.main(args);
+        } catch (RuntimeException ignored) {
+            // catch prevented system.exit call
+        }
+
+        // then
+        //TODO must have "version"
+        assertThat(outContent.toString()).isEmpty();
+    }
+
+    @Test
     @ExpectSystemExitWithStatus(1)
     void testWithoutParameters() {
         // given

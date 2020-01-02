@@ -3,15 +3,16 @@ package ru.astrizhachuk.cli;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static ru.astrizhachuk.Main.createOptions;
 
-class HelpCommandTest {
+class VersionCommandTest {
+
     @Test
     void testExecute() {
 
-        Command command = new HelpCommand(createOptions());
+        Command command = new VersionCommand();
         int result = command.execute();
 
         assertThat(result).isEqualTo(0);
     }
+
 }
