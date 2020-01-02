@@ -21,7 +21,7 @@ public class Main {
             } else if (cmd.hasOption("h")) {
                 command = new HelpCommand(options);
             } else {
-                if (!cmd.hasOption("b") && !cmd.hasOption("f")) {
+                if (!(cmd.hasOption("s") && cmd.hasOption("b")) && !cmd.hasOption("f")) {
                     throw new ParseException("Specify the source of the metadata!");
                 }
                 command = new ExecuteCommand(cmd);
@@ -64,6 +64,12 @@ public class Main {
                 .desc("json format file with metadata")
                 .hasArg()
                 .argName("FILE")
+                .build());
+        options.addOption(Option.builder("r")
+                .longOpt("report")
+                .desc("reporter format, default STDOUT")
+                .hasArg()
+                .argName("KEY")
                 .build());
         return options;
     }

@@ -84,6 +84,125 @@ class MainTest {
 
     @Test
     @ExpectSystemExitWithStatus(1)
+    void testServerWithoutArg() {
+        // given
+        String[] args = new String[]{"-s"};
+
+        // when
+        try {
+            Main.main(args);
+        } catch (RuntimeException ignored) {
+            // catch prevented system.exit call
+        }
+
+        // then
+        assertThat(errContent.toString()).containsIgnoringCase("missing argument for option");
+    }
+
+    @Test
+    @ExpectSystemExitWithStatus(1)
+    void testServerWithoutBase() {
+        // given
+        String[] args = new String[]{"-s", "server"};
+
+        // when
+        try {
+            Main.main(args);
+        } catch (RuntimeException ignored) {
+            // catch prevented system.exit call
+        }
+
+        // then
+        assertThat(errContent.toString()).containsIgnoringCase("specify the source of the metadata");
+    }
+
+    @Test
+    @ExpectSystemExitWithStatus(0)
+    void testServerWithBase() {
+        // given
+        String[] args = new String[]{"-s", "server", "-b", "УТ"};
+
+        // when
+        try {
+            Main.main(args);
+        } catch (RuntimeException ignored) {
+            // catch prevented system.exit call
+        }
+
+        // then
+        assertThat(outContent.toString()).isEmpty();
+    }
+
+    @Test
+    @ExpectSystemExitWithStatus(1)
+    void testServerWithEmptyBase() {
+        // given
+        String[] args = new String[]{"-s", "server", "-b"};
+
+        // when
+        try {
+            Main.main(args);
+        } catch (RuntimeException ignored) {
+            // catch prevented system.exit call
+        }
+
+        // then
+        assertThat(errContent.toString()).containsIgnoringCase("missing argument for option");
+    }
+
+    @Test
+    @ExpectSystemExitWithStatus(1)
+    void testBaseWithoutServer() {
+        // given
+        String[] args = new String[]{"-b", "base"};
+
+        // when
+        try {
+            Main.main(args);
+        } catch (RuntimeException ignored) {
+            // catch prevented system.exit call
+        }
+
+        // then
+        assertThat(errContent.toString()).containsIgnoringCase("specify the source of the metadata");
+    }
+
+    @Test
+    @ExpectSystemExitWithStatus(0)
+    void testFileWithoutServer() {
+        // given
+        String[] args = new String[]{"-f", "file"};
+
+        // when
+        try {
+            Main.main(args);
+        } catch (RuntimeException ignored) {
+            // catch prevented system.exit call
+        }
+
+        // then
+        assertThat(outContent.toString()).isEmpty();
+    }
+
+    @Test
+    @ExpectSystemExitWithStatus(1)
+    void testFileWithoutArg() {
+        // given
+        String[] args = new String[]{"-f"};
+
+        // when
+        try {
+            Main.main(args);
+        } catch (RuntimeException ignored) {
+            // catch prevented system.exit call
+        }
+
+        // then
+        assertThat(errContent.toString()).containsIgnoringCase("missing argument for option");
+    }
+
+    @Test
+    @ExpectSystemExitWithStatus(1)
     void testWithoutParameters() {
         // given
         String[] args = new String[]{};
