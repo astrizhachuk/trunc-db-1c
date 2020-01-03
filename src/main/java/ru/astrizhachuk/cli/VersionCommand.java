@@ -24,7 +24,7 @@ public class VersionCommand implements Command {
             LOGGER.error("Can't read manifest", e);
         }
 
-        LOGGER.info(String.format(
+        System.out.print(String.format(
                 "version: %s%n",
                 manifest.getMainAttributes().getValue(Attributes.Name.IMPLEMENTATION_VERSION)
         ));
