@@ -37,7 +37,7 @@ class MetadataParserTest {
         OkHttpClient client = new OkHttpClient();
         RequestBody body = RequestBody.create("{}", JSON);
         Request request = new Request.Builder()
-                .url(server.url("/metadata"))
+                .url(baseUrl)
                 .post(body)
                 .build();
 

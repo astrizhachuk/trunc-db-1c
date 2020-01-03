@@ -48,10 +48,10 @@ public class Main {
                 .desc("print this message")
                 .build());
         options.addOption(Option.builder("s")
-                .longOpt("server")
+                .longOpt("s")
                 .hasArg()
-                .argName("SERVER")
-                .desc("server with metadata service, like http://dmz-esb03.stdp.ru:8087")
+                .argName("URL")
+                .desc("url to metadata service, like http://example.com:8080/metadata")
                 .build());
         options.addOption(Option.builder("b")
                 .longOpt("base")
