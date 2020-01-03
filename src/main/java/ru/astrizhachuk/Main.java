@@ -71,11 +71,11 @@ public class Main {
                 .hasArg()
                 .argName("CONFIG")
                 .build());
-        options.addOption(Option.builder("r")
-                .longOpt("report")
-                .desc("reporter format, default STDOUT")
+        options.addOption(Option.builder("o")
+                .longOpt("output")
+                .desc("path to output file, default ./output.sql")
                 .hasArg()
-                .argName("KEY")
+                .argName("FILE")
                 .build());
         return options;
     }

@@ -78,8 +78,7 @@ class MainTest {
         }
 
         // then
-        //TODO must have "version"
-        assertThat(outContent.toString()).isEmpty();
+        assertThat(outContent.toString()).containsIgnoringCase("version");
     }
 
     @Test
