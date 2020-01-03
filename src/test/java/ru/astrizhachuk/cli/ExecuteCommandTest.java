@@ -38,4 +38,16 @@ class ExecuteCommandTest {
 
         assertThat(result).isEqualTo(0);
     }
+
+    @Test
+    void testExecuteResponseWithoutConfig() throws ParseException {
+
+        Options options = createOptions();
+        DefaultParser parser = new DefaultParser();
+        CommandLine cmd = parser.parse(options, new String[]{"-s", "server", "-b", "base"});
+        Command command = new ExecuteCommand(cmd);
+        int result = command.execute();
+
+        assertThat(result).isEqualTo(0);
+    }
 }

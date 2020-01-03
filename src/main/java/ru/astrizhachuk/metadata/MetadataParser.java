@@ -39,6 +39,7 @@ public class MetadataParser {
         MetadataParser metadataParser = null;
         ObjectMapper mapper = new ObjectMapper();
         try {
+            //TODO пересмотреть create(Object o)
             if (o instanceof File) {
                 metadataParser = mapper.readValue((File) o, MetadataParser.class);
             } else if (o instanceof InputStream) {
