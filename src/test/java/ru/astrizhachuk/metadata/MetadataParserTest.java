@@ -17,13 +17,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 class MetadataParserTest {
 
     public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
-    private static final String PATH_TO_FULL_RESPONSE_FILE = "./src/test/resources/full-response.json";
-    private static final String PATH_TO_SHORT_RESPONSE_FILE = "./src/test/resources/short-response.json";
+    private static final String PATH_TO_FULL_RESPONSE_JSON = "./src/test/resources/full-response.json";
+    private static final String PATH_TO_SHORT_RESPONSE_JSON = "./src/test/resources/short-response.json";
 
     @SneakyThrows
     private InputStream getResponseStream() {
 
-        String context = FileUtils.readFileToString(new File(PATH_TO_SHORT_RESPONSE_FILE), StandardCharsets.UTF_8);
+        String context = FileUtils.readFileToString(new File(PATH_TO_SHORT_RESPONSE_JSON), StandardCharsets.UTF_8);
 
         MockWebServer server = new MockWebServer();
         MockResponse mockResponse = new MockResponse()
@@ -63,7 +63,7 @@ class MetadataParserTest {
     @Test
     void createFromFile() {
         // given
-        File responseFile = new File(PATH_TO_FULL_RESPONSE_FILE);
+        File responseFile = new File(PATH_TO_FULL_RESPONSE_JSON);
 
         // when
         MetadataParser response = MetadataParser.create(responseFile);
