@@ -34,6 +34,7 @@ public class ExecuteCommand implements Command {
                 metadataParser = MetadataParser.create(httpClient.getResponseByteStream());
             } catch (IOException e) {
                 e.printStackTrace();
+                return 1;
             }
         }
 // TODO реализовать прогон configuration по metadataParser

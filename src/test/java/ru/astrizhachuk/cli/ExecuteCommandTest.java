@@ -105,4 +105,27 @@ class ExecuteCommandTest {
         // then
         assertThat(result).isEqualTo(0);
     }
+
+    @SneakyThrows
+    @Test
+    void testExecuteResponseBad() throws ParseException {
+        // given
+        server = new MockWebServer();
+        MockResponse mockResponse = new MockResponse().setResponseCode(500);
+        server.enqueue(mockResponse);
+        server.start();
+
+        Options options = createOptions();
+        DefaultParser parser = new DefaultParser();
+        String url = String.format("http://%s:%d/metadata", server.getHostName(), server.getPort());
+        CommandLine cmd = parser.parse(options, new String[]{"-s", url, "-b", "base"});
+
+        // when
+        Command command = new ExecuteCommand(cmd);
+        int result = command.execute();
+        server.shutdown();
+
+        // then
+        assertThat(result).isEqualTo(1);
+    }
 }
