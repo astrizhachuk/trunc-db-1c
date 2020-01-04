@@ -12,8 +12,8 @@ public class HttpClient {
 
     private static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
     private static final int TIMEOUT = 10;
-    private static OkHttpClient client;
-    private static Request request;
+    private OkHttpClient client;
+    private Request request;
 
     private HttpClient() {
         client = new OkHttpClient.Builder()
