@@ -3,12 +3,13 @@ package ru.astrizhachuk.cli;
 import org.apache.commons.cli.CommandLine;
 import ru.astrizhachuk.configuration.Configuration;
 import ru.astrizhachuk.http.HttpClient;
-import ru.astrizhachuk.metadata.MetadataParser;
+import ru.astrizhachuk.metadata.Metadata;
 import ru.astrizhachuk.reporter.Reporter;
 import ru.astrizhachuk.reporter.ReporterFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
 
 public class ExecuteCommand implements Command {
     private final CommandLine cmd;
@@ -25,24 +26,24 @@ public class ExecuteCommand implements Command {
 
         String destMetaFile = cmd.getOptionValue("f", "");
 
-        MetadataParser metadataParser = null;
+        Metadata metadata = null;
         if (!destMetaFile.isEmpty()) {
-            metadataParser = MetadataParser.create(new File(destMetaFile));
+            metadata = Metadata.create(new File(destMetaFile));
         } else {
             HttpClient httpClient = HttpClient.create(cmd);
             try {
-                metadataParser = MetadataParser.create(httpClient.getResponseByteStream());
+                metadata = Metadata.create(httpClient.getResponseByteStream());
             } catch (IOException e) {
                 e.printStackTrace();
                 return 1;
             }
         }
-// TODO реализовать прогон configuration по metadataParser
+
+        Collection<String> tables = metadata.collectByConfig(configuration);
 
         Reporter reporter = ReporterFactory.create(cmd);
-        reporter.report(metadataParser.getTables().values());
+        reporter.report(tables);
 
         return 0;
     }
-
 }
