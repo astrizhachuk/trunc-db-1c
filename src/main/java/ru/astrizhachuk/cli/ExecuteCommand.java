@@ -2,8 +2,13 @@ package ru.astrizhachuk.cli;
 
 import org.apache.commons.cli.CommandLine;
 import ru.astrizhachuk.configuration.Configuration;
+import ru.astrizhachuk.http.HttpClient;
+import ru.astrizhachuk.metadata.MetadataParser;
+import ru.astrizhachuk.reporter.Reporter;
+import ru.astrizhachuk.reporter.ReporterFactory;
 
 import java.io.File;
+import java.io.IOException;
 
 public class ExecuteCommand implements Command {
     private final CommandLine cmd;
@@ -15,15 +20,26 @@ public class ExecuteCommand implements Command {
     @Override
     public int execute() {
 
-        String destConfiguration = cmd.getOptionValue("c", "");
-        Configuration configuration = Configuration.create(new File(destConfiguration));
+        String destConfigFile = cmd.getOptionValue("c", "");
+        Configuration configuration = Configuration.create(new File(destConfigFile));
 
+        String destMetaFile = cmd.getOptionValue("f", "");
 
-        //TODO ex
-        //String source = cmd.getOptionValue("f", "");
-        //Path filePath = path(source);
-        //MetadataParser metadataParser = MetadataParser.create(new File(source));
-        //String report = cmd.getOptionValue("r", "");
+        MetadataParser metadataParser = null;
+        if (!destMetaFile.isEmpty()) {
+            metadataParser = MetadataParser.create(new File(destMetaFile));
+        } else {
+            HttpClient httpClient = HttpClient.create(cmd);
+            try {
+                metadataParser = MetadataParser.create(httpClient.getResponseByteStream());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+// TODO реализовать прогон configuration по metadataParser
+
+        Reporter reporter = ReporterFactory.create(cmd);
+        reporter.report(metadataParser.getTables().values());
 
         return 0;
     }
