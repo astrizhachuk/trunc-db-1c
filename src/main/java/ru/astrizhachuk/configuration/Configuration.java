@@ -22,7 +22,7 @@ public class Configuration {
         this(new ArrayList<>(), new ArrayList<>());
     }
 
-    public static Configuration create() {
+    private static Configuration create() {
         return new Configuration();
     }
 

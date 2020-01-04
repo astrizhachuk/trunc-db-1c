@@ -72,7 +72,6 @@ public class Metadata {
         removeByRule(shallow, metaDataObjects);
 
         return shallow.values();
-
     }
 
     private void removeByRule(HashMap<String, String> map, List<String> rules) {

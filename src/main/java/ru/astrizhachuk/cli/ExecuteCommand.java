@@ -1,5 +1,6 @@
 package ru.astrizhachuk.cli;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.cli.CommandLine;
 import ru.astrizhachuk.configuration.Configuration;
 import ru.astrizhachuk.http.HttpClient;
@@ -11,6 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 
+@Slf4j
 public class ExecuteCommand implements Command {
     private final CommandLine cmd;
 
@@ -26,7 +28,7 @@ public class ExecuteCommand implements Command {
 
         String destMetaFile = cmd.getOptionValue("f", "");
 
-        Metadata metadata = null;
+        Metadata metadata;
         if (!destMetaFile.isEmpty()) {
             metadata = Metadata.create(new File(destMetaFile));
         } else {
@@ -34,7 +36,7 @@ public class ExecuteCommand implements Command {
             try {
                 metadata = Metadata.create(httpClient.getResponseByteStream());
             } catch (IOException e) {
-                e.printStackTrace();
+                LOGGER.error("Can't get response stream from service", e);
                 return 1;
             }
         }
