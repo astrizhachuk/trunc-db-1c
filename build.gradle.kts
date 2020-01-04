@@ -4,9 +4,11 @@ import me.qoomon.gradle.gitversioning.GitVersioningPluginConfig.VersionDescripti
 
 plugins {
     java
+    jacoco
     id("io.franzbecker.gradle-lombok") version "3.2.0"
     id("com.github.johnrengelman.shadow") version "5.2.0"
     id("me.qoomon.git-versioning") version "2.1.0"
+    id("org.sonarqube") version "2.8"
 }
 
 repositories {
@@ -45,7 +47,6 @@ dependencies {
     implementation("org.slf4j", "slf4j-api", "1.8.0-beta4")
     implementation("org.slf4j", "slf4j-simple", "1.8.0-beta4")
 
-    //   implementation("org.apache.httpcomponents", "httpclient","4.5.10")
     implementation("com.squareup.okhttp3", "okhttp", "4.3.0")
 
     compileOnly("org.projectlombok", "lombok", lombok.version)
@@ -58,8 +59,9 @@ dependencies {
 
 }
 
-configure<JavaPluginConvention> {
-    sourceCompatibility = JavaVersion.VERSION_1_8
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
 }
 
 tasks.withType<JavaCompile> {
@@ -94,6 +96,27 @@ tasks.test {
     }
 }
 
+tasks.check {
+    dependsOn(tasks.jacocoTestReport)
+}
+
+tasks.jacocoTestReport {
+    reports {
+        xml.isEnabled = true
+        xml.destination = File("$buildDir/reports/jacoco/test/jacoco.xml")
+    }
+}
+
 lombok {
     version = "1.18.10"
+}
+
+sonarqube {
+    properties {
+        property("sonar.sourceEncoding", "UTF-8")
+        property("sonar.host.url", "http://sonar.petrovichstd.com")
+        property("sonar.projectKey", "trunc-db-1c")
+        property("sonar.projectName", "trunc-db-1c")
+        property("sonar.coverage.jacoco.xmlReportPaths", "$buildDir/reports/jacoco/test/jacoco.xml")
+    }
 }
