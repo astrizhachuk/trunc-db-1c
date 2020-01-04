@@ -12,7 +12,7 @@ import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ru.astrizhachuk.metadata.MetadataParser;
+import ru.astrizhachuk.metadata.Metadata;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -68,9 +68,9 @@ class HttpClientTest {
         // then
         ObjectMapper mapper = new ObjectMapper();
         mapper.findAndRegisterModules();
-        MetadataParser metadataParser = mapper.readValue(inputStream, MetadataParser.class);
+        Metadata metadata = mapper.readValue(inputStream, Metadata.class);
 
-        Map<String, String> tables = metadataParser.getTables();
+        Map<String, String> tables = metadata.getTables();
         assertThat(tables).hasSize(2);
         assertThat(tables.get("Справочник.АдресныеСокращения"))
                 .isEqualTo("_Reference56");

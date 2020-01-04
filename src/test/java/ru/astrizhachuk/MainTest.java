@@ -12,7 +12,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static ru.astrizhachuk.Main.APP_NAME;
 
 class MainTest {
-
+    private static final String PATH_TO_SHORT_RESPONSE_JSON = "./src/test/resources/short-response.json";
+    private static final String PATH_TO_FULL_CONFIGURATION_FILE = "./src/test/resources/configuration/configuration.json";
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
     private final PrintStream originalOut = System.out;
@@ -153,7 +154,7 @@ class MainTest {
     @ExpectSystemExitWithStatus(0)
     void testFileWithoutServer() {
         // given
-        String[] args = new String[]{"-f", "file"};
+        String[] args = new String[]{"-f", PATH_TO_SHORT_RESPONSE_JSON};
 
         // when
         try {
@@ -163,7 +164,7 @@ class MainTest {
         }
 
         // then
-        assertThat(outContent.toString()).isEmpty();
+        assertThat(outContent.toString()).isNotEmpty();
     }
 
     @Test
@@ -187,7 +188,7 @@ class MainTest {
     @ExpectSystemExitWithStatus(0)
     void testFileWithConfig() {
         // given
-        String[] args = new String[]{"-f", "file", "-c", "config"};
+        String[] args = new String[]{"-f", PATH_TO_SHORT_RESPONSE_JSON, "-c", PATH_TO_FULL_CONFIGURATION_FILE};
 
         // when
         try {
@@ -197,7 +198,7 @@ class MainTest {
         }
 
         // then
-        assertThat(outContent.toString()).isEmpty();
+        assertThat(outContent.toString()).isNotEmpty();
     }
 
     @Test
