@@ -6,19 +6,22 @@ import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.Test;
+import ru.astrizhachuk.configuration.Configuration;
 
 import java.io.File;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.Collection;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class MetadataParserTest {
+class MetadataTest {
 
-    public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
+    private static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
     private static final String PATH_TO_FULL_RESPONSE_JSON = "./src/test/resources/full-response.json";
     private static final String PATH_TO_SHORT_RESPONSE_JSON = "./src/test/resources/short-response.json";
+    private static final String PATH_TO_FULL_CONFIGURATION_FILE = "./src/test/resources/configuration/configuration.json";
 
     @SneakyThrows
     private InputStream getResponseStream() {
@@ -51,7 +54,7 @@ class MetadataParserTest {
         InputStream responseStream = getResponseStream();
 
         // when
-        MetadataParser response = MetadataParser.create(responseStream);
+        Metadata response = Metadata.create(responseStream);
 
         // then
         Map<String, String> tables = response.getTables();
@@ -66,12 +69,27 @@ class MetadataParserTest {
         File responseFile = new File(PATH_TO_FULL_RESPONSE_JSON);
 
         // when
-        MetadataParser response = MetadataParser.create(responseFile);
+        Metadata metadata = Metadata.create(responseFile);
 
         // then
-        Map<String, String> tables = response.getTables();
+        Map<String, String> tables = metadata.getTables();
         assertThat(tables).hasSize(4671);
         assertThat(tables.get("РегистрНакопления.ПТР_РасчетБригадыПодъема"))
                 .isEqualTo("_AccumRg14410");
+    }
+
+    @Test
+    void collectByConfig() {
+        // given
+        File responseFile = new File(PATH_TO_FULL_RESPONSE_JSON);
+        File file = new File(PATH_TO_FULL_CONFIGURATION_FILE);
+        Configuration config = Configuration.create(file);
+        Metadata metadata = Metadata.create(responseFile);
+
+        // when
+        Collection<String> notExclude = metadata.collectByConfig(config);
+
+        // then
+        assertThat(notExclude).hasSize(3407);
     }
 }
