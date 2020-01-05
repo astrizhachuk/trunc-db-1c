@@ -60,8 +60,8 @@ dependencies {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
 }
 
 tasks.withType<JavaCompile> {
@@ -113,8 +113,8 @@ lombok {
 
 sonarqube {
     properties {
+        // token in gradle.properties
         property("sonar.sourceEncoding", "UTF-8")
-        property("sonar.host.url", "http://sonar.petrovichstd.com")
         property("sonar.projectKey", "trunc-db-1c")
         property("sonar.projectName", "trunc-db-1c")
         property("sonar.coverage.jacoco.xmlReportPaths", "$buildDir/reports/jacoco/test/jacoco.xml")
