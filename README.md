@@ -44,13 +44,13 @@ java -jar с:/temp/trunc-db-1c-0.1.jar -f с:/files/input.json -o с:/files/outp
 #### Очистка таблиц по данным файла c расширенными настройками
 
 ``` sh
-java -jar с:/temp/trunc-db-1c-0.1.jar -f с:/files/input.json -c -o с:/files/config.json 
+java -jar с:/temp/trunc-db-1c-0.1.jar -f с:/files/input.json -c с:/files/config.json 
 ```
 
 #### Очистка таблиц по данным веб-сервиса с выводом в файл
 
 ``` sh
-java -jar с:/temp/trunc-db-1c-0.1.jar -s http://example.com:8080/metadata -b dev-user-1c-acc
+java -jar с:/temp/trunc-db-1c-0.1.jar -s http://example.com:8080/metadata -b dev-user-1c-acc -o с:/files/output.sql
 ```
 
 ### Форматы файлов
