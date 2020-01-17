@@ -18682,5 +18682,9 @@
   {
     "tableName": "РегистрСведений.АгентскиеУслуги",
     "storageTableName": "_InfoRg22799"
+  },
+  {
+    "tableName": "Справочник.Изменения",
+    "storageTableName": "_ReferenceChngR99999"
   }
 ]
