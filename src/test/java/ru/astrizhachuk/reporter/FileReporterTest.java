@@ -43,9 +43,9 @@ class FileReporterTest {
         List<String> stringList = FileUtils.readLines(file, "UTF-8");
         assertThat(stringList).hasSize(2);
         assertThat(stringList.get(0))
-                .containsIgnoringCase(String.format(Reporter.TRUNCATE_COMMAND_STRING, test.get(0)));
+                .containsIgnoringCase(String.format(CommandTemplates.TRUNCATE_COMMAND_STRING, test.get(0)));
         assertThat(stringList.get(1))
-                .containsIgnoringCase(String.format(Reporter.TRUNCATE_COMMAND_STRING, test.get(1)));
+                .containsIgnoringCase(String.format(CommandTemplates.TRUNCATE_COMMAND_STRING, test.get(1)));
 
     }
 
@@ -65,9 +65,9 @@ class FileReporterTest {
         List<String> stringList = FileUtils.readLines(file, "UTF-8");
         assertThat(stringList).hasSize(2);
         assertThat(stringList.get(0))
-                .containsIgnoringCase(String.format(Reporter.TRUNCATE_COMMAND_STRING, test.get(0)));
+                .containsIgnoringCase(String.format(CommandTemplates.TRUNCATE_COMMAND_STRING, test.get(0)));
         assertThat(stringList.get(1))
-                .containsIgnoringCase(String.format(Reporter.TRUNCATE_COMMAND_STRING, test.get(1)));
+                .containsIgnoringCase(String.format(CommandTemplates.TRUNCATE_COMMAND_STRING, test.get(1)));
 
     }
 
@@ -87,9 +87,9 @@ class FileReporterTest {
         List<String> stringList = FileUtils.readLines(file, "UTF-8");
         assertThat(stringList).hasSize(2);
         assertThat(stringList.get(0))
-                .containsIgnoringCase(String.format(Reporter.TRUNCATE_COMMAND_STRING, test.get(0)));
+                .containsIgnoringCase(String.format(CommandTemplates.TRUNCATE_COMMAND_STRING, test.get(0)));
         assertThat(stringList.get(1))
-                .containsIgnoringCase(String.format(Reporter.TRUNCATE_COMMAND_STRING, test.get(1)));
+                .containsIgnoringCase(String.format(CommandTemplates.TRUNCATE_COMMAND_STRING, test.get(1)));
 
     }
 }

@@ -39,9 +39,9 @@ class ConsoleReporterTest {
 
         // then
         assertThat(outContent.toString())
-                .containsIgnoringCase(String.format(Reporter.TRUNCATE_COMMAND_STRING, test.get(0)));
+                .containsIgnoringCase(String.format(CommandTemplates.TRUNCATE_COMMAND_STRING, test.get(0)));
         assertThat(outContent.toString())
-                .containsIgnoringCase(String.format(Reporter.TRUNCATE_COMMAND_STRING, test.get(1)));
+                .containsIgnoringCase(String.format(CommandTemplates.TRUNCATE_COMMAND_STRING, test.get(1)));
 
     }
 }

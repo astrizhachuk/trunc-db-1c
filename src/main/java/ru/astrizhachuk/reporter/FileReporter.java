@@ -23,7 +23,7 @@ public class FileReporter implements Reporter {
     public void report(Collection<String> report) {
 
         List<String> lines = report.stream()
-                .map(v -> String.format(Reporter.TRUNCATE_COMMAND_STRING, v))
+                .map(v -> String.format(CommandTemplates.TRUNCATE_COMMAND_STRING, v))
                 .collect(Collectors.toList());
         FileUtils.writeLines(file, "UTF-8", lines);
 
