@@ -61,26 +61,29 @@ public class Metadata {
 
     public Collection<String> collectByConfig(Configuration config) {
         // TODO опитимизировать
-        HashMap<String, String> shallow = new HashMap<>(getTables());
+        HashMap<String, String> result = new HashMap<>();
 
         List<String> prototypes = config.getPrototypes().stream()
-                .map(s -> format("%s.", s))
+                .map(s -> format("^%s.*", s))
                 .collect(Collectors.toList());
-        removeByRule(shallow, prototypes);
+
+        addByRule(result, prototypes);
 
         List<String> metaDataObjects = config.getMetaDataObjects();
-        removeByRule(shallow, metaDataObjects);
+        addByRule(result, metaDataObjects);
 
-        return shallow.values();
+        addByRule(result, Collections.singletonList(".*\\..*\\.Изменения$"));
+
+        return result.values();
     }
 
-    private void removeByRule(HashMap<String, String> map, List<String> rules) {
+    private void addByRule(HashMap<String, String> map, List<String> rules) {
 
         Set<Map.Entry<String, String>> entries = getTables().entrySet();
         for (Map.Entry<String, String> entry : entries) {
             for (String s : rules) {
-                if (entry.getKey().startsWith(s)) {
-                    map.remove(entry.getKey());
+                if (entry.getKey().matches(s)) {
+                    map.put(entry.getKey(), entry.getValue());
                     break;
                 }
             }

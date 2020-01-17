@@ -73,7 +73,7 @@ class MetadataTest {
 
         // then
         Map<String, String> tables = metadata.getTables();
-        assertThat(tables).hasSize(4671);
+        assertThat(tables).hasSize(4672);
         assertThat(tables.get("РегистрНакопления.ПТР_РасчетБригадыПодъема"))
                 .isEqualTo("_AccumRg14410");
     }
@@ -87,9 +87,11 @@ class MetadataTest {
         Metadata metadata = Metadata.create(responseFile);
 
         // when
-        Collection<String> notExclude = metadata.collectByConfig(config);
+        Collection<String> truncated = metadata.collectByConfig(config);
 
         // then
-        assertThat(notExclude).hasSize(3407);
+        assertThat(truncated).hasSize(2480);
+        assertThat(truncated).contains("_Reference57", "_ReferenceChngR735", "_ReferenceChngR754", "_AccumRgChngR10702");
+        assertThat(truncated).doesNotContain("_ReferenceChngR99999");
     }
 }
