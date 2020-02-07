@@ -1,0 +1,40 @@
+image: gradle:alpine
+
+variables:
+  GRADLE_OPTS: "-Dorg.gradle.daemon=false"
+
+before_script:
+  - export GRADLE_USER_HOME=`pwd`/.gradle
+
+build:
+  stage: build
+  script: gradle --build-cache assemble
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    policy: push
+    paths:
+      - build
+      - .gradle
+
+test:
+  stage: test
+  script: gradle check
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    paths:
+      - build/libs/*.jar
+
+deploy:
+  stage: deploy
+  script:
+    - curl -fL https://getcli.jfrog.io | sh
+    - ./jfrog rt config --url=$ARTIFACTORY_URL --apikey=$ARTIFACTORY_API_KEY
+    - ./jfrog rt u "build/libs/*.jar" devops-1c/trunc-db-1c/trunc-db-1c.jar
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    policy: pull
+    paths:
+      - build/libs/*.jar
+  only:
+    - master
+    - tags
