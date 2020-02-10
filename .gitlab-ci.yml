@@ -2,7 +2,6 @@ image: gradle:alpine
 
 variables:
   GRADLE_OPTS: "-Dorg.gradle.daemon=false"
-  CI_DEBUG_TRACE: "true"
 
 .cache_paths: &cache_paths
   cache:
