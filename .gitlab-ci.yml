@@ -2,36 +2,53 @@ image: gradle:alpine
 
 variables:
   GRADLE_OPTS: "-Dorg.gradle.daemon=false"
+  CI_DEBUG_TRACE: "true"
 
-before_script:
-  - export GRADLE_USER_HOME=`pwd`/.gradle
-
-.rules_build: &rules_build
-  rules:
-    - if: '$CI_COMMIT_REF_NAME == "master"'
-      when: always
-    - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "master"'
-      when: always
-
-build:
-  stage: build
-  <<: *rules_build
-  script: gradle --build-cache assemble
+.cache_paths: &cache_paths
   cache:
-    key: "$CI_COMMIT_REF_NAME"
-    policy: push
     paths:
       - build
       - .gradle
 
-test:
-  stage: test
-  <<: *rules_build
-  script: gradle check
+before_script:
+  - export GRADLE_USER_HOME=`pwd`/.gradle
+
+build:
+  stage: build
+  <<: *cache_paths
+  script: gradle --build-cache assemble
+  rules:
+    - if: '$CI_COMMIT_REF_NAME == "master" || $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "master"'
+      when: always
   cache:
     key: "$CI_COMMIT_REF_NAME"
-    paths:
-      - build/libs/*.jar
+    policy: push
+
+push:
+  stage: test
+  <<: *cache_paths
+  script: gradle sonarqube -Dsonar.branch.name=${CI_COMMIT_REF_NAME}
+  rules:
+    - if: '$CI_COMMIT_REF_NAME == "master"'
+      when: always
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+
+merge_request:
+  stage: test
+  <<: *cache_paths
+  variables:
+    GIT_DEPTH: 0
+  script: gradle sonarqube
+    -Dsonar.pullrequest.key=${CI_MERGE_REQUEST_IID}
+    -Dsonar.pullrequest.branch=${CI_MERGE_REQUEST_SOURCE_BRANCH_NAME}
+    -Dsonar.pullrequest.base=${CI_MERGE_REQUEST_TARGET_BRANCH_NAME}
+  rules:
+    - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "master"'
+      when: always
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+  allow_failure: true
 
 deploy:
   stage: deploy
