@@ -6,8 +6,8 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,12 +33,12 @@ public class Configuration {
                 ObjectMapper mapper = new ObjectMapper();
                 configuration = mapper.readValue(file, Configuration.class);
             } else {
-                InputStream resourceAsStream = Configuration.class.getResourceAsStream("/configuration.json");
-                ObjectMapper mapper = new ObjectMapper();
-                configuration = mapper.readValue(resourceAsStream, Configuration.class);
+                throw new FileNotFoundException();
             }
+        } catch (FileNotFoundException e) {
+            LOGGER.error("Configuration file not found.", e);
         } catch (IOException e) {
-            LOGGER.error("Can't deserialize configuration file", e);
+            LOGGER.error("Can't deserialize configuration file.", e);
         }
 
         if (configuration == null) {
