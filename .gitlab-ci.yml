@@ -3,50 +3,57 @@ image: gradle:alpine
 variables:
   GRADLE_OPTS: "-Dorg.gradle.daemon=false"
 
-.cache_paths: &cache_paths
-  cache:
-    paths:
-      - build
-      - .gradle
-
 before_script:
   - export GRADLE_USER_HOME=`pwd`/.gradle
 
 build:
   stage: build
-  <<: *cache_paths
   script: gradle --build-cache assemble
   rules:
     - if: '$CI_COMMIT_REF_NAME == "master" || $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "master"'
       when: always
+    - if: '$CI_COMMIT_REF_NAME == "production"'
+      when: always
   cache:
     key: "$CI_COMMIT_REF_NAME"
     policy: push
+    paths:
+      - build
+      - .gradle
 
 push:
   stage: test
-  <<: *cache_paths
-  script: gradle sonarqube -Dsonar.branch.name=${CI_COMMIT_REF_NAME}
+  variables:
+    GIT_DEPTH: 0
+  script: gradle check sonarqube
+    -Dsonar.branch.name=${CI_COMMIT_REF_NAME}
+    -Dsonar.coverage.jacoco.xmlReportPaths=build/reports/jacoco/test/jacoco.xml
   rules:
     - if: '$CI_COMMIT_REF_NAME == "master"'
       when: always
   cache:
     key: "$CI_COMMIT_REF_NAME"
+    paths:
+      - build
+      - .gradle
 
 merge_request:
   stage: test
-  <<: *cache_paths
   variables:
     GIT_DEPTH: 0
-  script: gradle sonarqube
+  script: gradle check sonarqube
     -Dsonar.pullrequest.key=${CI_MERGE_REQUEST_IID}
     -Dsonar.pullrequest.branch=${CI_MERGE_REQUEST_SOURCE_BRANCH_NAME}
     -Dsonar.pullrequest.base=${CI_MERGE_REQUEST_TARGET_BRANCH_NAME}
+    -Dsonar.coverage.jacoco.xmlReportPaths=build/reports/jacoco/test/jacoco.xml
   rules:
     - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "master"'
       when: always
   cache:
     key: "$CI_COMMIT_REF_NAME"
+    paths:
+      - build
+      - .gradle
   allow_failure: true
 
 deploy:
@@ -61,5 +68,5 @@ deploy:
     paths:
       - build/libs/*.jar
   rules:
-    - if: '$CI_COMMIT_REF_NAME == "master" && $CI_COMMIT_TAG'
+    - if: '$CI_COMMIT_REF_NAME == "production"'
       when: always
