@@ -22,7 +22,10 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: SonarCloud Scan
-        run: ./gradlew check sonarqube -Dsonar.host.url=https://sonarcloud.io
+        run: ./gradlew check sonarqube
+          -Dsonar.host.url=https://sonarcloud.io
+          -Dsonar.projectKey=astrizhachuk_trunc-db-1c
+          -Dsonar.organization=astrizhachuk
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
